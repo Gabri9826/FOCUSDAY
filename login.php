@@ -11,13 +11,14 @@ if($_POST){
     $password = $_POST['password'];
 
     $sql = "SELECT * FROM usuarios
-            WHERE email='$email' AND contraseña='$password'";
+            WHERE email='$email' AND contrasena='$password'";
 
     $resultado = $conexion->query($sql);
 
     if($resultado->num_rows > 0){
         $usuario = $resultado->fetch_assoc();
         $_SESSION['usuario'] = $usuario['nombre'];
+        $_SESSION['id_usuario'] = $usuario['id_usuario'];
         header("Location: dashboard.php");
         exit();
 

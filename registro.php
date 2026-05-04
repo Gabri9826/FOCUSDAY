@@ -6,7 +6,7 @@ if($_POST){
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $sql = "INSERT INTO usuarios (nombre, email, contraseña)
+    $sql = "INSERT INTO usuarios (nombre, email, contrasena)
     VALUES ('$nombre', '$email', '$password')";
 
     if($conexion->query($sql)){

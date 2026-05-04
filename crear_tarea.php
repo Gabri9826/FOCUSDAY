@@ -1,11 +1,12 @@
 <?php
 include("BaseDatos/conexion.php");
 session_start();
+$id_usuario = $_SESSION['id_usuario'];
 
 if($_POST){
     $titulo = $_POST['titulo'];
 
-    $sql = "INSERT INTO tareas (titulo) VALUES ('$titulo')";
+    $sql = "INSERT INTO tareas (titulo, id_usuario) VALUES ('$titulo', '$id_usuario')";
     $conexion->query($sql);
 
     header("Location: dashboard.php");
