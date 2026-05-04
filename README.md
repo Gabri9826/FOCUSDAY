@@ -17,11 +17,14 @@ FocusDay es una aplicación web desarrollada en PHP y MySQL para la gestión y o
 -Gestión de sesiones
 -Interfaz mejorada con Bootstrap
 -Conexión a base de datos MySQL
-
-## Próximas mejoras
 -Sistema de creación de tareas
 -Listado de tareas
--Eliminación y edición de tareas
+-Eliminación de tareas
+-Cerrar sesión.
+
+## Próximas mejoras
+-Ordenar por fecha
+-Ordenar por prioridad
 
 ## Estado del proyecto
 En desarrollo
