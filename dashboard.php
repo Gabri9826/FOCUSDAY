@@ -125,6 +125,14 @@ $resultado = $conexion->query($sql);
 
                                 </div>
 
+                                <div>
+
+                                    <a href="completar_tarea.php?id=<?php echo $tarea['id_tarea']; ?>"
+                                       class="btn btn-success btn-sm">
+                                       Completar
+                                    </a>
+                                </div>
+
                             </div>
 
                         </div>
