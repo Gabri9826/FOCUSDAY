@@ -2,6 +2,7 @@
 session_start();
 include("BaseDatos/conexion.php");
 
+//Proteger Acceso
 if(!isset($_SESSION['usuario'])){
     header("Location: login.php");
     exit();
@@ -10,9 +11,10 @@ if(!isset($_SESSION['usuario'])){
 $nombreUsuario = $_SESSION['usuario'];
 $id_usuario = (int) $_SESSION['id_usuario'];
 
+//Consultar tareas del usuario
 $sql = "SELECT * FROM tareas
         WHERE id_usuario = $id_usuario
-        ORDER BY id_tarea DESC";
+        ORDER BY fecha DESC";
 
 $resultado = $conexion->query($sql);
 ?>
@@ -28,57 +30,122 @@ $resultado = $conexion->query($sql);
 
     <div class="container mt-5">
 
+        <!-- CABECERA -->
         <div class="d-flex justify-content-between align-items-center mb-4">
+
             <div>
+
                 <h2>👋 Bienvenido, <?php echo $nombreUsuario; ?></h2>
-                <p class ="text-muted">Organiza tu día de forma eficiente</p>
+
+                <p class="text-muted">Organiza tu dia de forma eficiente</p>
+
             </div>
+
             <a href="logout.php" class="btn btn-danger">Cerrar sesión</a>
+
         </div>
 
+        <!-- BOTON CREAR -->
         <div class="mb-4">
-            <a href="crear_tarea.php" class="btn btn-primary">+ Nueva tarea</a>
+
+            <a href="crear_tarea.php" class="btn btn-primary">Nueva tarea</a>
+
         </div>
 
+        <!-- LISTADO -->
         <div class="card shadow">
+
             <div class="card-body">
-                <h4 class="mb-3">📝 Tus tareas</h4>
+
+                <h4 class="mb-4">📝 Tus tareas</h4>
 
                 <?php if($resultado->num_rows > 0): ?>
 
-                    <ul class="list-group">
+                    <?php while($tarea = $resultado->fetch_assoc()): ?>
 
-                        <?php while($tarea = $resultado->fetch_assoc()): ?>
+                        <?php
+                            // COLOR SEGUN PRIORIDAD
+                            $color = "secondary";
 
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                            if($tarea['prioridad'] == "alta"){
+                                $color = "danger";
 
-                                <span>
-                                    <?php echo $tarea['titulo']; ?>
-                                </span>
+                            }elseif($tarea['prioridad'] == "media"){
+                                $color = "warning";
 
-                                <a href="eliminar_tarea.php?id=<?php echo $tarea['id_tarea']; ?>"
-                                    class="btn btn-sm btn-danger">
-                                    Eliminar
-                                </a>
+                            }else{
+                                $color = "success";
+                            }
+                    ?>
 
-                            </li>
+                    <div class="card mb-3 border-0 shadow-sm">
 
-                        <?php endwhile; ?>
+                        <div class="card-body">
 
-                    </ul>
-                
-                <?php else: ?>
+                            <div class="d-flex justify-content-between align-items-start">
 
-                    <div class="alert alert-info">
-                        No tienes tareas todavía. ¡Empieza creando una!
+                                <!-- INFO -->
+                                <div>
+
+                                    <h5 class="card-title">
+                                        <?php echo $tarea['titulo']; ?>
+                                    </h5>
+
+                                    <p class="card-text">
+                                        <?php echo $tarea['descripcion']; ?>
+                                    </p>
+
+                                    <!-- PRIORIDAD -->
+                                    <span class="badge bg-<?php echo $color; ?>">
+                                        <?php echo ucfirst($tarea['prioridad']); ?>
+                                    </span>
+
+                                    <!-- ESTADO -->
+                                    <span class="badge bg-dark">
+                                        <?php echo ucfirst($tarea['estado']); ?>
+                                    </span>
+
+                                    <!-- FECHA -->
+                                    <div class="mt-2 text-muted">
+
+                                        📆 Fecha límite:
+                                        <?php echo $tarea['fecha_limite']; ?>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- BOTON -->
+                                <div>
+
+                                    <a href="eliminar_tarea.php?id=<?php echo $tarea['id_tarea']; ?>"
+                                       class="btn btn-danger btn-sm">
+                                       Eliminar
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
                     </div>
+                <?php endwhile; ?>
 
-                <?php endif; ?>
+            <?php else: ?>
+
+                <div class="alert alert-info">
+                    No tienes tareas todavía.
+                    ¡Empieza creando una!
+                </div>
+
+            <?php endif; ?>
 
             </div>
+
         </div>
 
     </div>
-
+    
     </body>
 </html>
